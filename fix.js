@@ -31,6 +31,16 @@ function removeUnecessary(data) {
 	return data;
 }
 
+function fixSwappedRegisterBanks(data) {
+	for(c in data) {
+		var test_case = data[c];
+
+		test_case.final.R = test_case.initial.R;
+	}
+
+	return data;
+}
+
 
 const dir = fs.opendirSync('.')
 let dirent;
@@ -40,6 +50,12 @@ while ((dirent = dir.readSync()) !== null) {
 		console.log("Fixing " + dirent.name);
 		const raw_data = fs.readFileSync(dirent.name);
 		const data = JSON.parse(raw_data);
+
+		if(dirent.name == "0100mmmm00000111.json") {
+			fixSwappedRegisterBanks(data);
+		}
+
+
 		const fixed = JSON.stringify(removeUnecessary(data));
 		//fs.writeFileSync(dirent.name.replace("_sz0_pr0", ""), fixed);
 		//fs.unlinkSync(dirent.name);
