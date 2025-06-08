@@ -38,7 +38,8 @@ while ((dirent = dir.readSync()) !== null) {
 		const raw_data = fs.readFileSync(dirent.name);
 		const data = JSON.parse(raw_data);
 		const fixed = JSON.stringify(removeUnecessary(data));
-		fs.writeFileSync(dirent.name, fixed);
+		fs.writeFileSync(dirent.name.replace("_sz0_pr0", ""), fixed);
+		fs.unlinkSync(dirent.name);
 	}
 }
 dir.closeSync()
